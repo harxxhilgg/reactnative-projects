@@ -1,6 +1,5 @@
 import { Tabs } from "expo-router";
-import Feather from "@expo/vector-icons/Feather";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { theme } from "../theme";
 
@@ -12,7 +11,7 @@ export default function Layout() {
         options={{
           title: "Shooping List",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="list" size={size} color={color} />
+            <FontAwesome6 name="list-ul" size={size} color={color} />
           ),
         }}
       />
@@ -20,8 +19,9 @@ export default function Layout() {
         name="counter"
         options={{
           title: "Counter",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <AntDesign name="clockcircleo" size={size} color={color} />
+            <FontAwesome5 name="clock" size={size} color={color} />
           ),
         }}
       />
