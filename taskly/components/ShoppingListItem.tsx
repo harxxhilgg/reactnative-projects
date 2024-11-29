@@ -5,9 +5,16 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 type Props = {
   name: string;
   isCompleted?: boolean;
+  onDelete: () => void;
+  onCancelDelete: () => void;
 };
 
-export function ShoppingListItem({ name, isCompleted }: Props) {
+export function ShoppingListItem({
+  name,
+  isCompleted,
+  onDelete,
+  onCancelDelete,
+}: Props) {
   const handleDelete = () => {
     Alert.alert(
       `Are you sure you want to DELETE ${name}?`,
@@ -15,12 +22,12 @@ export function ShoppingListItem({ name, isCompleted }: Props) {
       [
         {
           text: "Yes",
-          onPress: () => console.log("Ok, Deleting.."),
+          onPress: () => onDelete(),
           style: "destructive",
         },
         {
           text: "Cancel",
-          onPress: () => console.log("Then why did u click this BITCH.."),
+          onPress: () => onCancelDelete(),
           style: "cancel",
         },
       ],

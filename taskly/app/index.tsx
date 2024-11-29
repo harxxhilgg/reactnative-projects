@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, FlatList, View, Text } from "react-native";
 import { ShoppingListItem } from "../components/ShoppingListItem";
 import { theme } from "../theme";
 import { useState } from "react";
@@ -8,25 +8,9 @@ type ShoppingListItemType = {
   name: string;
 };
 
-const initialList: ShoppingListItemType[] = [
-  {
-    id: "1",
-    name: "Takoyaki",
-  },
-  {
-    id: "2",
-    name: "Wagyu",
-  },
-  {
-    id: "3",
-    name: "Pork",
-  },
-];
-
 export default function App() {
   const [value, setValue] = useState("");
-  const [shoppingList, setShoppingList] =
-    useState<ShoppingListItemType[]>(initialList);
+  const [shoppingList, setShoppingList] = useState<ShoppingListItemType[]>([]);
   const handleSubmit = () => {
     if (value) {
       const newShoppingList = [
@@ -37,25 +21,51 @@ export default function App() {
       setValue("");
     }
   };
+
+  const handleDelete = (id: string, name: string) => {
+    const newShoppingList = shoppingList.filter((item) => item.id !== id);
+    console.log(`Ok, deleting ${name}`);
+    setShoppingList(newShoppingList);
+  };
+
+  const handleCancelDelete = (name: string) => {
+    console.log(
+      `If you don't wanna delete ${name}, then why did u clicked on cancel button BITCH?`,
+    );
+  };
+
   return (
-    <ScrollView
+    <FlatList
+      data={shoppingList}
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
       stickyHeaderIndices={[0]}
-    >
-      <TextInput
-        placeholder="E.g., Yakitori, Tunamayo, Ramen..."
-        style={styles.textInput}
-        value={value}
-        onChangeText={setValue}
-        keyboardType="default" //keyboard type
-        returnKeyType="done" //submit button appearence
-        onSubmitEditing={handleSubmit}
-      />
-      {shoppingList.map((item) => (
-        <ShoppingListItem key={item.id} name={item.name} />
-      ))}
-    </ScrollView>
+      ListEmptyComponent={
+        <View style={styles.listEmptyContainer}>
+          <Text>Your shopping list is empty.</Text>
+        </View>
+      }
+      ListHeaderComponent={
+        <TextInput
+          placeholder="E.g. Yakitori, Tunamayo, Ramen..."
+          style={styles.textInput}
+          value={value}
+          onChangeText={setValue}
+          keyboardType="default" //keyboard type
+          returnKeyType="done" //submit button appearence
+          onSubmitEditing={handleSubmit}
+        />
+      }
+      renderItem={({ item }) => {
+        return (
+          <ShoppingListItem
+            name={item.name}
+            onDelete={() => handleDelete(item.id, item.name)}
+            onCancelDelete={() => handleCancelDelete(item.name)}
+          />
+        );
+      }}
+    />
   );
 }
 
@@ -72,12 +82,17 @@ const styles = StyleSheet.create({
   textInput: {
     borderColor: theme.colorLightGray,
     borderWidth: 2,
-    padding: 12,
+    padding: 14,
     marginHorizontal: 12,
     marginBottom: 12,
     marginTop: 18,
     fontSize: 18,
     borderRadius: 48,
     backgroundColor: theme.colorWhite,
+  },
+  listEmptyContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 18,
   },
 });
