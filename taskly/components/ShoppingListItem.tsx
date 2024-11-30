@@ -1,12 +1,21 @@
-import { Alert, Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import {
+  Alert,
+  Text,
+  TouchableOpacity,
+  Pressable,
+  StyleSheet,
+  View,
+} from "react-native";
 import { theme } from "../theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Feather from "@expo/vector-icons/Feather";
 
 type Props = {
   name: string;
   isCompleted?: boolean;
   onDelete: () => void;
   onCancelDelete: () => void;
+  onToggleComplete: () => void;
 };
 
 export function ShoppingListItem({
@@ -14,6 +23,7 @@ export function ShoppingListItem({
   isCompleted,
   onDelete,
   onCancelDelete,
+  onToggleComplete,
 }: Props) {
   const handleDelete = () => {
     Alert.alert(
@@ -34,20 +44,29 @@ export function ShoppingListItem({
     );
   };
   return (
-    <View
+    <Pressable
       style={[
         styles.itemContainer,
         isCompleted ? styles.completedContainer : undefined,
       ]}
+      onPress={onToggleComplete}
     >
-      <Text
-        style={[
-          styles.itemText,
-          isCompleted ? styles.completedText : undefined,
-        ]}
-      >
-        {name}
-      </Text>
+      <View style={styles.row}>
+        <Feather
+          name={isCompleted ? "check-circle" : "circle"}
+          size={24}
+          color={isCompleted ? theme.colorGray : theme.colorCerulean}
+        />
+        <Text
+          numberOfLines={1}
+          style={[
+            styles.itemText,
+            isCompleted ? styles.completedText : undefined,
+          ]}
+        >
+          {name}
+        </Text>
+      </View>
       <TouchableOpacity onPress={handleDelete} activeOpacity={0.8}>
         <AntDesign
           name="closecircle"
@@ -55,7 +74,7 @@ export function ShoppingListItem({
           color={isCompleted ? theme.colorGray : theme.colorRed}
         />
       </TouchableOpacity>
-    </View>
+    </Pressable>
   );
 }
 
@@ -68,13 +87,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  row: {
+    flexDirection: "row",
+    gap: 8,
+    flex: 1,
+  },
   completedContainer: {
     backgroundColor: theme.colorLightGray,
     borderBottomColor: theme.colorLightGray,
   },
   itemText: {
-    fontSize: 22,
-    fontWeight: "200",
+    fontSize: 18,
+    fontWeight: "400",
+    flex: 1,
   },
   completedText: {
     textDecorationLine: "line-through",
