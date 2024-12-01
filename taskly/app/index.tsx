@@ -45,15 +45,8 @@ export default function App() {
 
   const handleDelete = (id: string, name: string) => {
     const newShoppingList = shoppingList.filter((item) => item.id !== id);
-    console.log(`Ok, deleting ${name}`);
     saveToStorage(storageKey, shoppingList);
     setShoppingList(newShoppingList);
-  };
-
-  const handleCancelDelete = (name: string) => {
-    console.log(
-      `If you don't wanna delete ${name}, then why did u clicked on cancel button BITCH?`,
-    );
   };
 
   const handleToggleComplete = (id: string) => {
@@ -100,7 +93,6 @@ export default function App() {
           <ShoppingListItem
             name={item.name}
             onDelete={() => handleDelete(item.id, item.name)}
-            onCancelDelete={() => handleCancelDelete(item.name)}
             onToggleComplete={() => handleToggleComplete(item.id)}
             isCompleted={Boolean(item.completedAtTimestamp)}
           />

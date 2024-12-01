@@ -14,7 +14,6 @@ type Props = {
   name: string;
   isCompleted?: boolean;
   onDelete: () => void;
-  onCancelDelete: () => void;
   onToggleComplete: () => void;
 };
 
@@ -22,7 +21,6 @@ export function ShoppingListItem({
   name,
   isCompleted,
   onDelete,
-  onCancelDelete,
   onToggleComplete,
 }: Props) {
   const handleDelete = () => {
@@ -37,7 +35,6 @@ export function ShoppingListItem({
         },
         {
           text: "Cancel",
-          onPress: () => onCancelDelete(),
           style: "cancel",
         },
       ],
